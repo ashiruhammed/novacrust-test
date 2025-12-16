@@ -208,21 +208,12 @@ export function CryptoCash({ onNextStep }: CryptoCashProps) {
             setValue('payFrom', value, { shouldValidate: true })
           }>
           <SelectTrigger className='w-full py-5 px-6 rounded-full'>
-            {selectedPayFromOption ? (
-              <div className='flex items-center gap-3'>
-                {selectedPayFromOption.icon}
-                <span className='text-primary font-medium'>
-                  {selectedPayFromOption.label}
-                </span>
-              </div>
-            ) : (
-              <SelectValue
-                placeholder='Select wallet'
-                className='text-primary font-medium'
-              />
-            )}
+            <SelectValue
+              placeholder='Select wallet'
+              className='text-primary font-medium'
+            />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent position='popper'>
             {payRouteOptions.map((option) => (
               <SelectItem
                 key={option.id}
@@ -257,21 +248,12 @@ export function CryptoCash({ onNextStep }: CryptoCashProps) {
             setValue('payTo', value, { shouldValidate: true })
           }>
           <SelectTrigger className='w-full py-5 px-6 rounded-full'>
-            {selectedPayToOption ? (
-              <div className='flex items-center gap-3'>
-                {selectedPayToOption.icon}
-                <span className='text-primary font-medium'>
-                  {selectedPayToOption.label}
-                </span>
-              </div>
-            ) : (
-              <SelectValue
-                placeholder='Select wallet'
-                className='text-primary font-medium'
-              />
-            )}
+            <SelectValue
+              placeholder='Select wallet'
+              className='text-primary font-medium'
+            />
           </SelectTrigger>
-          <SelectContent>
+          <SelectContent position='popper'>
             {payRouteOptions.map((option) => (
               <SelectItem
                 key={option.id}
