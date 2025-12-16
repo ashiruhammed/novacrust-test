@@ -1,11 +1,14 @@
 'use client';
-'use client';
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { CryptoCash } from '../tabs/crypto-cash';
 import { CashCryptoTab } from '../tabs/cash-crypto';
 
-function CryptoSwap() {
+type CryptoSwapProps = {
+  onNextStep?: () => void;
+};
+
+function CryptoSwap({ onNextStep }: CryptoSwapProps) {
   return (
     <div>
       <Tabs defaultValue='crypto-cash'>
@@ -15,7 +18,7 @@ function CryptoSwap() {
           <TabsTrigger value='crypto-flat'>Crypto to flat loan</TabsTrigger>
         </TabsList>
         <TabsContent value='crypto-cash'>
-          <CryptoCash />
+          <CryptoCash onNextStep={onNextStep} />
         </TabsContent>
         <TabsContent value='cash-crypto'>
           <CashCryptoTab />

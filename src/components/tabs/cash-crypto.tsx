@@ -20,7 +20,9 @@ function CashCryptoTab() {
           placeholder='Enter your email'
         />
       </div>
-      <Button className='w-full rounded-full mt-20 font-bold' size={'lg'}>
+      <Button
+        className='w-full rounded-full text-white mt-20 font-bold'
+        size={'lg'}>
         Update me
       </Button>
     </div>

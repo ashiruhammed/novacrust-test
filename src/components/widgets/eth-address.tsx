@@ -2,11 +2,20 @@ import { ArrowLeft, Copy, Info } from 'lucide-react';
 import React from 'react';
 import { Button } from '../ui/button';
 
-function EthAddress() {
+type EthAddressProps = {
+  onNextStep?: () => void;
+  onPrevStep?: () => void;
+};
+
+function EthAddress({ onNextStep, onPrevStep }: EthAddressProps) {
   return (
     <div className='h-full flex flex-col'>
       <div className='flex-row flex items-center'>
-        <button>
+        <button
+          type='button'
+          onClick={() => {
+            onPrevStep?.();
+          }}>
           <ArrowLeft />
         </button>
         <div className='flex-1 pr-12'>
@@ -48,8 +57,12 @@ function EthAddress() {
         </p>
       </div>
       <Button
+        type='button'
         size={'lg'}
-        className='font-bold w-full rounded-full mt-auto text-white'>
+        className='font-bold w-full rounded-full mt-auto text-white'
+        onClick={() => {
+          onNextStep?.();
+        }}>
         I have sent it
       </Button>
     </div>

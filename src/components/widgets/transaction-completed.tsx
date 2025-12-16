@@ -4,7 +4,11 @@ import CheckCircleIcon from '../icons/check-circle';
 import { Copy } from 'lucide-react';
 import { Button } from '../ui/button';
 
-function TransactionCompleted() {
+type TransactionCompletedProps = {
+  onRestart?: () => void;
+};
+
+function TransactionCompleted({ onRestart }: TransactionCompletedProps) {
   return (
     <div>
       <div className='flex justify-center flex-col items-center'>
@@ -27,8 +31,12 @@ function TransactionCompleted() {
         </div>
       </div>
       <Button
+        type='button'
         size={'lg'}
-        className='mt-10 hover:bg-transparent text-center w-full text-primary bg-transparent font-bold'>
+        className='mt-10 hover:bg-transparent text-center w-full text-primary bg-transparent font-bold'
+        onClick={() => {
+          onRestart?.();
+        }}>
         Go back to home
       </Button>
     </div>

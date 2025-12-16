@@ -1,4 +1,6 @@
+import React from 'react';
 import { ArrowLeft } from 'lucide-react';
+import { useFormContext } from 'react-hook-form';
 import { Label } from '../ui/label';
 import {
   Select,
@@ -10,11 +12,24 @@ import {
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 
-function RecepientDetails() {
+type RecipientDetailsProps = {
+  onNextStep?: () => void;
+  onPrevStep?: () => void;
+};
+
+function RecepientDetails({ onNextStep, onPrevStep }: RecipientDetailsProps) {
+  const { register, setValue, watch } = useFormContext();
+
+  const selectedBank = watch('bank') ?? '';
+
   return (
     <div className='h-full flex flex-col'>
       <div className='flex-row flex items-center'>
-        <button>
+        <button
+          type='button'
+          onClick={() => {
+            onPrevStep?.();
+          }}>
           <ArrowLeft />
         </button>
         <div className='flex-1 pr-12'>
@@ -24,7 +39,9 @@ function RecepientDetails() {
       <div className='mt-10 space-y-8'>
         <div className='space-y-3'>
           <Label>Bank</Label>
-          <Select>
+          <Select
+            value={selectedBank}
+            onValueChange={(value) => setValue('bank', value)}>
             <SelectTrigger className='w-full py-5 px-6 rounded-full'>
               <SelectValue placeholder='Select an option' />
             </SelectTrigger>
@@ -34,12 +51,14 @@ function RecepientDetails() {
               <SelectItem value='opay'>Opay</SelectItem>
             </SelectContent>
           </Select>
+          <input type='hidden' {...register('bank')} value={selectedBank} />
         </div>
         <div>
           <Label>Account number</Label>
           <Input
             className='mt-3 py-5 px-6 rounded-full'
             placeholder='Enter your email'
+            {...register('accountNumber')}
           />
         </div>
         <div>
@@ -56,6 +75,7 @@ function RecepientDetails() {
           <Input
             className='mt-3 py-5 px-6 rounded-full'
             placeholder='Enter recipient email'
+            {...register('recipientEmail')}
           />
         </div>
         <div>
@@ -64,10 +84,17 @@ function RecepientDetails() {
             className='mt-3 py-5 px-6 rounded-full'
             placeholder='Enter recipient phone number'
             type='number'
+            {...register('recipientPhone')}
           />
         </div>
       </div>
-      <Button size={'lg'} className='font-bold w-full rounded-full mt-auto'>
+      <Button
+        type='button'
+        size={'lg'}
+        className='font-bold w-full rounded-full mt-auto text-white'
+        onClick={() => {
+          onNextStep?.();
+        }}>
         Next
       </Button>
     </div>
