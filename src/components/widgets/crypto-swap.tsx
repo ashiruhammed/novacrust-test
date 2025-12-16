@@ -3,6 +3,7 @@
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
 import { CryptoCash } from '../tabs/crypto-cash';
+import { CashCryptoTab } from '../tabs/cash-crypto';
 
 function CryptoSwap() {
   return (
@@ -15,6 +16,12 @@ function CryptoSwap() {
         </TabsList>
         <TabsContent value='crypto-cash'>
           <CryptoCash />
+        </TabsContent>
+        <TabsContent value='cash-crypto'>
+          <CashCryptoTab />
+        </TabsContent>
+        <TabsContent value='crypto-flat'>
+          <CashCryptoTab />
         </TabsContent>
       </Tabs>
     </div>
