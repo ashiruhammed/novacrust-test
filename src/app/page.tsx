@@ -1,6 +1,7 @@
 import CryptoSwap from '@/components/widgets/crypto-swap';
 import EthAddress from '@/components/widgets/eth-address';
 import RecepientDetails from '@/components/widgets/recipient-detaills';
+import TransactionCompleted from '@/components/widgets/transaction-completed';
 
 export default function Home() {
   return (
@@ -8,7 +9,8 @@ export default function Home() {
       <main className='shadow py-10 px-16 h-[782px] rounded-xl md:min-h-[782px] bg-white w-full max-w-2xl'>
         {/* <CryptoSwap /> */}
         {/* <RecepientDetails /> */}
-        <EthAddress />
+        {/* <EthAddress /> */}
+        <TransactionCompleted />
       </main>
     </div>
   );
