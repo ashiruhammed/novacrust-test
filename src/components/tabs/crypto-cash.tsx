@@ -7,6 +7,7 @@ import CeloIcon from '../icons/celo-icon';
 import TonIcon from '../icons/ton-icon';
 import { Button } from '../ui/button';
 import { Label } from '../ui/label';
+import { useFormContext } from 'react-hook-form';
 import {
   Select,
   SelectContent,
@@ -39,9 +40,25 @@ const tokenOptions: TokenOption[] = [
   },
 ];
 
-export function CryptoCash() {
-  const [selectedToken, setSelectedToken] = React.useState(tokenOptions[0].id);
+type CryptoCashProps = {
+  onNextStep?: () => void;
+};
+
+export function CryptoCash({ onNextStep }: CryptoCashProps) {
+  const { register, setValue, watch } = useFormContext();
   const [query, setQuery] = React.useState('');
+
+  React.useEffect(() => {
+    setValue('payToken', tokenOptions[0].id);
+    setValue('receiveCurrency', 'naira');
+    setValue('payFrom', 'light');
+    setValue('payTo', 'light');
+  }, [setValue]);
+
+  const selectedToken = watch('payToken') ?? tokenOptions[0].id;
+  const receiveCurrency = watch('receiveCurrency') ?? 'naira';
+  const payFrom = watch('payFrom') ?? 'light';
+  const payTo = watch('payTo') ?? 'light';
 
   const selectedOption = React.useMemo(
     () => tokenOptions.find((option) => option.id === selectedToken),
@@ -63,7 +80,9 @@ export function CryptoCash() {
         <div className='flex-row flex items-center justify-between'>
           <h1 className='text-2xl font-semibold text-primary'>1.00</h1>
 
-          <Select value={selectedToken} onValueChange={setSelectedToken}>
+          <Select
+            value={selectedToken}
+            onValueChange={(value) => setValue('payToken', value)}>
             <SelectTrigger className='flex items-center gap-3 rounded-2xl border px-4 py-3 text-left shadow-sm'>
               <SelectValue
                 aria-label={selectedOption?.label.split('-')[0]}
@@ -100,26 +119,40 @@ export function CryptoCash() {
               </div>
             </SelectContent>
           </Select>
+          <input
+            type='hidden'
+            {...register('payToken')}
+            value={selectedToken}
+          />
         </div>
       </div>
       <div className='space-y-4 rounded-[30px] border bg-white p-6 shadow-sm'>
         <p className='font-medium text-popover-foreground'>You receive</p>
         <div className='flex-row flex items-center justify-between'>
           <h1 className='text-2xl font-semibold text-primary'>1.00</h1>
-          <Select>
+          <Select
+            value={receiveCurrency}
+            onValueChange={(value) => setValue('receiveCurrency', value)}>
             <SelectTrigger className='flex items-center gap-3  rounded-2xl border px-4 py-3 text-left shadow-sm'>
-              <SelectValue placeholder='NGN' defaultValue={'naira'} />
+              <SelectValue placeholder='NGN' />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value='naira'>NGN</SelectItem>
             </SelectContent>
           </Select>
+          <input
+            type='hidden'
+            {...register('receiveCurrency')}
+            value={receiveCurrency}
+          />
         </div>
       </div>
 
       <div className='space-y-2'>
         <Label className='text-primary font-medium'>Pay from</Label>
-        <Select>
+        <Select
+          value={payFrom}
+          onValueChange={(value) => setValue('payFrom', value)}>
           <SelectTrigger className='w-full py-5 px-6 rounded-full'>
             <SelectValue
               placeholder='Theme'
@@ -132,10 +165,13 @@ export function CryptoCash() {
             <SelectItem value='system'>System</SelectItem>
           </SelectContent>
         </Select>
+        <input type='hidden' {...register('payFrom')} value={payFrom} />
       </div>
       <div className='space-y-2'>
         <Label className='text-primary font-medium'>Pay to</Label>
-        <Select>
+        <Select
+          value={payTo}
+          onValueChange={(value) => setValue('payTo', value)}>
           <SelectTrigger className='w-full py-5 px-6 rounded-full'>
             <SelectValue
               placeholder='Theme'
@@ -148,9 +184,14 @@ export function CryptoCash() {
             <SelectItem value='system'>System</SelectItem>
           </SelectContent>
         </Select>
+        <input type='hidden' {...register('payTo')} value={payTo} />
       </div>
 
-      <Button size={'lg'} className='w-full rounded-full font-bold'>
+      <Button
+        type='button'
+        size={'lg'}
+        className='w-full text-white rounded-full font-bold'
+        onClick={onNextStep}>
         Convert now
       </Button>
     </div>
