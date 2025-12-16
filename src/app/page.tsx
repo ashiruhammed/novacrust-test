@@ -7,10 +7,47 @@ import TransactionCompleted from '@/components/widgets/transaction-completed';
 import { useForm, FormProvider } from 'react-hook-form';
 
 export default function Home() {
-  const method = useForm();
+  const method = useForm({
+    defaultValues: {
+      payToken: 'usdt-celo',
+      receiveCurrency: 'naira',
+      payFrom: 'light',
+      payTo: 'light',
+      bank: '',
+      accountNumber: '',
+      recipientEmail: '',
+      recipientPhone: '',
+    },
+    mode: 'onBlur',
+  });
   const [step, setStep] = React.useState(1);
 
-  const goToNextStep = () => {
+  const goToNextStep = async () => {
+    type FieldName =
+      | 'payToken'
+      | 'receiveCurrency'
+      | 'payFrom'
+      | 'payTo'
+      | 'bank'
+      | 'accountNumber'
+      | 'recipientEmail'
+      | 'recipientPhone';
+
+    const stepFields: Record<number, FieldName[]> = {
+      1: ['payToken', 'receiveCurrency', 'payFrom', 'payTo'],
+      2: ['bank', 'accountNumber', 'recipientEmail', 'recipientPhone'],
+      3: [],
+    };
+
+    const fieldsToValidate = stepFields[step] ?? [];
+
+    if (fieldsToValidate.length > 0) {
+      const isValid = await method.trigger(fieldsToValidate, {
+        shouldFocus: true,
+      });
+      if (!isValid) return;
+    }
+
     setStep((current) => Math.min(current + 1, 4));
   };
 
