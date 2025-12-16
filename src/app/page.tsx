@@ -11,8 +11,8 @@ export default function Home() {
     defaultValues: {
       payToken: 'usdt-celo',
       receiveCurrency: 'naira',
-      payFrom: 'light',
-      payTo: 'light',
+      payFrom: 'metamask',
+      payTo: 'metamask',
       bank: '',
       accountNumber: '',
       recipientEmail: '',

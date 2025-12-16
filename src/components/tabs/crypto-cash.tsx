@@ -5,6 +5,10 @@ import React from 'react';
 import BnbIcon from '../icons/bnb-icon';
 import CeloIcon from '../icons/celo-icon';
 import TonIcon from '../icons/ton-icon';
+import MetamaskIcon from '../icons/metamask-icon';
+import RainbowIcon from '../icons/rainbow-icon';
+import WalletIcon from '../icons/wallet-icon';
+import OtherIcon from '../icons/other-icon';
 import { Button } from '../ui/button';
 import { Label } from '../ui/label';
 import { useFormContext } from 'react-hook-form';
@@ -21,6 +25,29 @@ type TokenOption = {
   label: string;
   icon: React.ReactNode;
 };
+
+const payRouteOptions: TokenOption[] = [
+  {
+    id: 'metamask',
+    label: 'Metamask',
+    icon: <MetamaskIcon />,
+  },
+  {
+    id: 'rainbow',
+    label: 'Rainbow',
+    icon: <RainbowIcon />,
+  },
+  {
+    id: 'walletconnect',
+    label: 'WalletConnect',
+    icon: <WalletIcon />,
+  },
+  {
+    id: 'other',
+    label: 'Other wallets',
+    icon: <OtherIcon />,
+  },
+];
 
 const tokenOptions: TokenOption[] = [
   {
@@ -39,7 +66,6 @@ const tokenOptions: TokenOption[] = [
     icon: <BnbIcon />,
   },
 ];
-
 type CryptoCashProps = {
   onNextStep?: () => void;
 };
@@ -55,12 +81,22 @@ export function CryptoCash({ onNextStep }: CryptoCashProps) {
 
   const selectedToken = watch('payToken') ?? tokenOptions[0].id;
   const receiveCurrency = watch('receiveCurrency') ?? 'naira';
-  const payFrom = watch('payFrom') ?? 'light';
-  const payTo = watch('payTo') ?? 'light';
+  const payFrom = watch('payFrom') ?? payRouteOptions[0].id;
+  const payTo = watch('payTo') ?? payRouteOptions[0].id;
 
   const selectedOption = React.useMemo(
     () => tokenOptions.find((option) => option.id === selectedToken),
     [selectedToken]
+  );
+
+  const selectedPayFromOption = React.useMemo(
+    () => payRouteOptions.find((option) => option.id === payFrom),
+    [payFrom]
+  );
+
+  const selectedPayToOption = React.useMemo(
+    () => payRouteOptions.find((option) => option.id === payTo),
+    [payTo]
   );
 
   const filteredOptions = React.useMemo(() => {
@@ -172,15 +208,32 @@ export function CryptoCash({ onNextStep }: CryptoCashProps) {
             setValue('payFrom', value, { shouldValidate: true })
           }>
           <SelectTrigger className='w-full py-5 px-6 rounded-full'>
-            <SelectValue
-              placeholder='Theme'
-              className='text-primary font-medium'
-            />
+            {selectedPayFromOption ? (
+              <div className='flex items-center gap-3'>
+                {selectedPayFromOption.icon}
+                <span className='text-primary font-medium'>
+                  {selectedPayFromOption.label}
+                </span>
+              </div>
+            ) : (
+              <SelectValue
+                placeholder='Select wallet'
+                className='text-primary font-medium'
+              />
+            )}
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='light'>Light</SelectItem>
-            <SelectItem value='dark'>Dark</SelectItem>
-            <SelectItem value='system'>System</SelectItem>
+            {payRouteOptions.map((option) => (
+              <SelectItem
+                key={option.id}
+                value={option.id}
+                className='flex items-center gap-3 rounded-2xl px-4 py-3 text-left text-base hover:bg-muted'>
+                {option.icon}
+                <span className='text-sm font-semibold text-primary'>
+                  {option.label}
+                </span>
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
         <input
@@ -204,15 +257,32 @@ export function CryptoCash({ onNextStep }: CryptoCashProps) {
             setValue('payTo', value, { shouldValidate: true })
           }>
           <SelectTrigger className='w-full py-5 px-6 rounded-full'>
-            <SelectValue
-              placeholder='Theme'
-              className='text-primary font-medium'
-            />
+            {selectedPayToOption ? (
+              <div className='flex items-center gap-3'>
+                {selectedPayToOption.icon}
+                <span className='text-primary font-medium'>
+                  {selectedPayToOption.label}
+                </span>
+              </div>
+            ) : (
+              <SelectValue
+                placeholder='Select wallet'
+                className='text-primary font-medium'
+              />
+            )}
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value='light'>Light</SelectItem>
-            <SelectItem value='dark'>Dark</SelectItem>
-            <SelectItem value='system'>System</SelectItem>
+            {payRouteOptions.map((option) => (
+              <SelectItem
+                key={option.id}
+                value={option.id}
+                className='flex items-center gap-3 rounded-2xl px-4 py-3 text-left text-base hover:bg-muted'>
+                {option.icon}
+                <span className='text-sm font-semibold text-primary'>
+                  {option.label}
+                </span>
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
         <input
